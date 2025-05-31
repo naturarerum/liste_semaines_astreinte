@@ -1,5 +1,7 @@
 import locale
 from datetime import date, timedelta
+import csv
+
 
 
 def generer_liste_semaines(debut, fin, gestionnaires, premier_gestionnaire=None):
@@ -8,7 +10,7 @@ def generer_liste_semaines(debut, fin, gestionnaires, premier_gestionnaire=None)
     debut (date) : date de debut
     fin (date) : date de fin
     gestionnaires (list) : liste des gestionnaires en astreinte - nom et numéro de telephone
-
+    premier_gestionnaire : pour commencer les semaines avec un gestionnaire différent du premier de la liste (facultatif)
  Returns : liste_semaines : liste de semaines """
 
     locale.setlocale(category=locale.LC_ALL, locale="")  # Configuration pour le français
@@ -32,6 +34,18 @@ def generer_liste_semaines(debut, fin, gestionnaires, premier_gestionnaire=None)
         gestionnaire_index += 1
 
     return liste_semaines
+
+
+def export_csv(liste_semaines):
+    nom_fichier_csv = 'liste_astreinte'
+    cols = ['Du', 'Au', 'debut', 'fin', 'Gestionnaire']
+    with open(nom_fichier_csv, 'w', newline='', encoding='utf-8') as fichier_csv:
+        writer = csv.writer(fichier_csv)
+        writer.writerow(cols)
+        for row in liste_semaines:
+            writer.writerow(row)
+
+    print(f"Le fichier '{nom_fichier_csv}' a été généré avec succès.")
 
 
 if __name__ == "__main__":
